@@ -19,7 +19,7 @@ contract Token is ERC20, ERC20Mintable, ERC20Pausable, Ownable{
   }
 
   modifier changable() {
-    require( canChange );
+    require( canChange , "Token is not changable");
     _;
   }
 

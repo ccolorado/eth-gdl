@@ -32,17 +32,32 @@ contract('Token', function(accounts) {
     it("can change its name", async function() {
 
       const _new_name = "New Name";
-      const _new_symbol = "NS";
+      const _new_symbol = "Nn";
 
-      const x = await this.token.mutateToken(_new_name, _new_symbol);
-      // console.log(x);
+      await this.token.mutateToken(_new_name, _new_symbol);
 
       const name = await this.token.name();
       const symbol = await this.token.symbol();
-
       name.should.equal(_new_name);
       symbol.should.equal(_new_symbol);
 
+    });
+
+    it("can change its name only once", async function() {
+
+      var _new_name = "New Name";
+      var _new_symbol = "Nn";
+
+      await this.token.mutateToken(_new_name, _new_symbol);
+      const first_name = await this.token.name();
+      const first_symbol = await this.token.symbol();
+      first_name.should.equal(_new_name);
+      first_symbol.should.equal(_new_symbol);
+
+      _new_name = "Second Name";
+      _new_symbol = "SN";
+      await this.token.mutateToken(_new_name, _new_symbol)
+        .should.be.rejectedWith(EVMRevert);
     });
 
   });
